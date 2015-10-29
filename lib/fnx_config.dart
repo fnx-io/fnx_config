@@ -20,13 +20,36 @@ class FnxConfig extends Transformer {
 
   String mode = null;
 
+  Pattern yamlConfigName = new RegExp(r"^lib/conf/config_[^/]*.yaml$");
+
   FnxConfig.asPlugin(BarbackSettings _settings) {
     mode = _settings.mode.name;
   }
 
-  String get allowedExtensions => ".html";
+  String get allowedExtensions => ".html .yaml";
 
   Future apply(Transform transform) async {
+
+    var id = transform.primaryInput.id;
+
+    if (id.path.contains(yamlConfigName)) {
+      _cleanYamlConfigFile(transform);
+
+    } else if (id.path.endsWith(".html")) {
+      return _embedConfiguration(transform);
+
+    } else {
+      // nothing
+    }
+  }
+
+  Future _cleanYamlConfigFile(Transform transform) {
+    print(transform.primaryInput.id);
+    transform.addOutput(new Asset.fromString(transform.primaryInput.id, "# content deleted"));
+    return null;
+  }
+
+  Future _embedConfiguration(Transform transform) async {
 
     AssetId configId = new AssetId(transform.primaryInput.id.package, "lib/conf/config_${mode}.yaml");
 
@@ -43,7 +66,6 @@ class FnxConfig extends Transformer {
 
     String jsonEncoded = JSON.encode(finalConfig);
 
-    var id = transform.primaryInput.id;
     return transform.primaryInput.readAsString().then((content) {
 
       var document = parse(content);
@@ -54,12 +76,17 @@ class FnxConfig extends Transformer {
         return scriptTag.attributes['type'] == "pub/fnx_config";
 
       }).forEach((configScriptTag) {
-        configScriptTag.text=" var fnx_config = \"${_toBase64(jsonEncoded)}\";";
+        configScriptTag.text = " var fnx_config = \"${_toBase64(jsonEncoded)}\";";
         configScriptTag.attributes.remove("type");
       });
 
-      transform.addOutput(new Asset.fromString(id, document.outerHtml));
-
-    });
+      transform.addOutput(new Asset.fromString(transform.primaryInput.id, document.outerHtml));
+    }
+    );
   }
+
+  isPrimary(AssetId id) {
+    return id.path.endsWith(".html") || id.path.contains(yamlConfigName);
+  }
+
 }

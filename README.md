@@ -43,11 +43,11 @@ The reason why we encode the configuration, is that we don't want to
 tempt the user with too much knowledge. We don't need any bored teenager
 to play with our API endpoints and API keys.
 
-**Please** don't mistake this feature for any kind of security,
-it's just simple BASE64 and obviously it will be accessible to any skilled user. 
-But little bit of obfuscation cannot do any harm. 
+**Please don't mistake this feature for any kind of security**,
+it's just simple BASE64 and the configuration will be accessible to any skilled user. 
+But a little bit of obfuscation cannot do any harm. 
 
-See [example]().
+See [example](http://demo.fnx.io/fnx_config-examples).
 
 ## Reading
 
