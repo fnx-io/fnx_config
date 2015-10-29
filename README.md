@@ -59,7 +59,7 @@ and access your configuration via global function:
 
     String apiKey = fnxConfig()["ourSecretApiKey"];
     
-*fnx_config* also adds few metadata you might find useful:
+**fnx_config** also adds few metadata you might find useful:
 
     fnxConfigMeta()["mode"]; // pub build mode (--mode=qwerty)
     fnxConfigMeta()["timestamp"]; // timestamp of build    
@@ -74,6 +74,6 @@ Simply add more configuration files:
 and use them with pub:
      
     pub build --mode=qwerty
-    pub serve --mode=qwerty
+    pub serve --mode=jenkins
             
     
