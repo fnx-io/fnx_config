@@ -1,0 +1,7 @@
+thisFileName: config_qwerty.yaml
+listWithoutAPurpose:
+  - item
+  - another item
+  - no more items please
+ourSecretApiKey: qwertyuiop
+ourSecretApiUrl: http://this-is-very-secret.qwerty/api/v1/
