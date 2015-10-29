@@ -1,4 +1,7 @@
-library fnx_config;
+/// Transformer which includes
+/// build mode dependent configuration into your HTML file.
+///
+library fnx_config.transform;
 
 import 'package:barback/barback.dart';
 import 'dart:async' show Future;
@@ -44,8 +47,7 @@ class FnxConfig extends Transformer {
   }
 
   Future _cleanYamlConfigFile(Transform transform) {
-    print(transform.primaryInput.id);
-    transform.addOutput(new Asset.fromString(transform.primaryInput.id, "# content deleted"));
+    transform.addOutput(new Asset.fromString(transform.primaryInput.id, "# content deleted by fnx_config transformer"));
     return null;
   }
 

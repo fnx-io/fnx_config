@@ -1,4 +1,6 @@
-library fnx_config;
+/// Methods to access your configuration.
+///
+library fnx_config.read;
 
 import 'dart:convert';
 import 'dart:js';

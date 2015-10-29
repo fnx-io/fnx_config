@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>fnx_config - Dart API docs</title>
+    <!-- required because all the links are pseudo-absolute -->
+    <base href=".">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static-assets/prettify.css">
+    <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static-assets/styles.css">
+
+    <meta name="description" content="fnx_config API docs, for the Dart programming language.">
+    <link rel="icon" href="static-assets/favicon.png">
+
+    <!-- Do not remove placeholder -->
+    <!-- Header Placeholder -->
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header class="container-fluid" id="title">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 contents">
+              <ol class="breadcrumbs gt-separated hidden-xs">
+                  <li class="self-crumb">fnx_config</li>
+              </ol>
+              <div class="self-name">fnx_config</div>
+              <form class="search navbar-right" role="search">
+                <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+              </form>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+        </div> <!-- /container -->
+    </nav>
+
+    <div class="container masthead">
+      <div class="row">
+        <div class="col-sm-12 contents">
+          <ol class="breadcrumbs gt-separated visible-xs">
+          </ol>
+          <div class="title-description">
+              <h1 class="title">
+                  <div class="kind">package</div> fnx_config
+              </h1>
+          </div>
+          <ul class="subnav">
+              <li><a href="index.html#libraries">Libraries</a></li>
+          </ul>
+        </div> <!-- /col -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+
+</header>
+
+<div class="container body">
+  <div class="row">
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5>fnx_config</h5>
+
+    <ol>
+      <li class="section-title"><a href="index.html#libraries">Libraries</a></li>
+      <li><a href="fnx_config.read/fnx_config.read-library.html">fnx_config.read</a></li>
+      <li><a href="fnx_config.transform/fnx_config.transform-library.html">fnx_config.transform</a></li>
+    </ol>
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+      <section class="desc markdown">
+      
+            <h1>fnx_config</h1>
+<p>Transformer which helps you manage different configurations for different builds of your web app.
+Usually you need different configuration for different environments:</p>
+<pre><code>String apiRoot = "http://localhost:8080/api/v1
+// Use in production!!!!!
+// String apiRoot = "http://this-is-very-important.qwerty/api/v1/"
+
+</code></pre>
+<p>... and that's just terrible. Let's try something else.    </p>
+<h2>Usage</h2>
+<p>Add transformer to your pubspec.yaml:</p>
+<pre><code>dependencies:
+  fnx_config: ^1.0.0
+
+transformers:
+- fnx_config
+</code></pre>
+<p>Then create configuration profiles (YAML files). Usually you will need two of them.</p><ul><li><code>lib/conf/config_debug.yaml</code> - for <code>pub serve</code></li><li><code>lib/conf/config_release.yaml</code> - for <code>pub build</code></li></ul>
+<p>Content of those files is completely up to you, it's probably going to be something like this:</p>
+<pre><code>ourSecretApiKey: qwertyuiop
+ourSecretApiUrl: http://this-is-very-secret.qwerty/api/v1/
+</code></pre>
+<p>Then add <code>&lt;script type="pub/fnx_config"&gt;&lt;/script&gt;</code> into the <code>&lt;head&gt;</code>
+of your HTML files and run <code>pub serve</code>.</p>
+<h2>Result</h2>
+<p>Transformer searches for HTML files with this instruction, and replaces it with encoded content of
+your YAML file:</p>
+<pre><code>var fnx_config = "eyJjb25maWciOnsiYWhvai  ... tMjlUMTg6NDE6MjAuMTkwIn19";
+
+</code></pre>
+<p>The reason why we encode the configuration, is that we don't want to
+tempt the user with too much knowledge. We don't need any bored teenager
+to play with our API endpoints and API keys.</p>
+<p><strong>Please don't mistake this feature for any kind of security</strong>,
+it's just simple BASE64 and the configuration will be accessible to any skilled user. 
+But a little bit of obfuscation cannot do any harm. </p>
+<p>See <a href="http://demo.fnx.io/fnx_config-examples">example</a>.</p>
+<h2>Reading</h2>
+<p>Import</p>
+<pre><code>import 'package:fnx_config/fnx_config_read.dart';
+</code></pre>
+<p>and access your configuration via global function:</p>
+<pre><code>String apiKey = fnxConfig()["ourSecretApiKey"];
+
+</code></pre>
+<p><strong>fnx_config</strong> also adds few metadata you might find useful:</p>
+<pre><code>fnxConfigMeta()["mode"]; // pub build mode (--mode=qwerty)
+fnxConfigMeta()["timestamp"]; // timestamp of build    
+    
+</code></pre>
+<h2>Multiple configuration profiles</h2>
+<p>Simply add more configuration files:</p>
+<pre><code>lib/conf/config_qwerty.yaml
+lib/conf/config_jenkins.yaml
+</code></pre>
+<p>and use them with pub:</p>
+<pre><code>pub build --mode=qwerty
+pub serve --mode=jenkins
+        
+
+</code></pre>
+      
+      </section>
+
+    <section class="summary" id="libraries">
+      <h2>Libraries</h2>
+      <dl>
+          <dt id="fnx_config.read">
+            <span class="name "><a href="fnx_config.read/fnx_config.read-library.html">fnx_config.read</a></span>
+          </dt>
+          <dd>
+            
+            <p>
+              Methods to access your configuration.
+                          </p>
+          </dd>
+          <dt id="fnx_config.transform">
+            <span class="name "><a href="fnx_config.transform/fnx_config.transform-library.html">fnx_config.transform</a></span>
+          </dt>
+          <dd>
+            
+            <p>
+              Transformer which includes
+build mode dependent configuration into your HTML file.
+                          </p>
+          </dd>
+      </dl>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+
+  </div><!--/.sidebar-offcanvas-right-->
+
+  </div> <!-- row -->
+</div> <!-- container -->
+
+<footer>
+    <div class="container-fluid">
+        <div class="container">
+            <p class="text-center">
+                <span class="no-break">
+                  fnx_config 1.0.0 api docs
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="https://www.dartlang.org">
+                    <img src="static-assets/favicon.png" alt="Dart" title="Dart"width="16" height="16">
+                  </a>
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
+                </span>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/prettify.js"></script>
+<script src="static-assets/script.js"></script>
+<!-- Do not remove placeholder -->
+<!-- Footer Placeholder -->
+
+<!-- Made with <3 by dartdoc version 0.6.0+1 -->
+</body>
+
+</html>
