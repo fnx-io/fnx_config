@@ -2,7 +2,9 @@ name: fnx_config
 description: A transformer to include build specific global configuration of your app.
 version: 1.0.0
 author: Tomas Zverina <tomucha@gmail.com>
-homepage: https://github.com/fnx-io/fnx_router
+homepage: https://github.com/fnx-io/fnx_config
+environment:
+  sdk: ">=1.8.0 <2.0.0"
 dependencies:
   barback: ^0.15.2
   html5lib: ^0.12.0

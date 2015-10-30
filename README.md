@@ -76,4 +76,12 @@ and use them with pub:
     pub build --mode=qwerty
     pub serve --mode=jenkins
             
-    
+## Polymer    
+
+With Polymer, place **fnx_config** transformer after web_components
+
+	- web_components:
+    		entry_points: web/index.html
+	- reflectable:
+    		entry_points: web/index.dart
+	- fnx_config
