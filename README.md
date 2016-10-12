@@ -1,6 +1,8 @@
-# fnx_config
+# fnx_config - configuration management
 
-Transformer which helps you manage different configurations for different builds of your web app.
+This is a transformer which helps you manage different configurations for different builds of your web app.
+
+
 Usually you need different configuration for different environments:
 
     String apiRoot = "http://localhost:8080/api/v1
@@ -75,6 +77,8 @@ and use them with pub:
      
     pub build --mode=qwerty
     pub serve --mode=jenkins
+
+# Examples            
             
 ## Polymer    
 
@@ -85,3 +89,37 @@ With Polymer, place **fnx_config** transformer after web_components
 	- reflectable:
     		entry_points: web/index.dart
 	- fnx_config
+	
+## Angular2
+
+Position of `fnx_config` doesn't seem to matter with Angular2. We keep it a the end of the list of
+transformers.
+
+## Firebase example
+
+Typical usage with [firebase](https://pub.dartlang.org/packages/firebase3) looks like this:
+
+config_debug.yaml
+
+    firebase:
+      apiKey: "AIzaSyDq6qYBJHOMmdsdsEsKFiotLxKmjqA"
+      authDomain: "my-app-1af5.firebaseapp.com"
+      databaseURL: "https://my-app-1af5.firebaseio.com"
+      storageBucket: "my-app-1af5.appspot.com"
+      
+main.dart
+      
+    import 'package:firebase3/firebase.dart' as f;
+    import 'package:fnx_config/fnx_config_read.dart';
+      
+    ...
+      
+    Map cfg = fnxConfig();    
+    f.App app = f.initializeApp(
+      apiKey: cfg["firebase"]["apiKey"],
+      authDomain: cfg["firebase"]["authDomain"],
+      databaseURL: cfg["firebase"]["databaseURL"],
+      storageBucket: cfg["firebase"]["storageBucket"]
+    );      
+
+	

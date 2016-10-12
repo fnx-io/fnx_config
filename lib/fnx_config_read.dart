@@ -24,7 +24,7 @@ Map fnxConfigMeta() {
 
 void _readToCache() {
 
-  if (_configCache != null) return _configCache;
+  if (_configCache != null) return;
 
   var jsConfig = context['fnx_config'];
   if (jsConfig == null) {

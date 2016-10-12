@@ -5,7 +5,7 @@ library fnx_config.transform;
 
 import 'package:barback/barback.dart';
 import 'dart:async' show Future;
-import 'package:html5lib/parser.dart' show parse;
+import 'package:html/parser.dart' show parse;
 import 'package:yaml/yaml.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
