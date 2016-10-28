@@ -1,3 +1,8 @@
+# 1.2.1
+
+- Removed crypto dependency
+- Strong mode
+
 # 1.1.0
 
 - Allowed versions of crypto `>=0.9.1 <3.0.0`.
