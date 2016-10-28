@@ -92,8 +92,7 @@ With Polymer, place **fnx_config** transformer after web_components
 	
 ## Angular2
 
-Position of `fnx_config` doesn't seem to matter with Angular2. We keep it a the end of the list of
-transformers.
+Also with Angular2, keep the transformer at the end of the list.
 
 ## Firebase example
 

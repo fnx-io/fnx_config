@@ -8,7 +8,6 @@ import 'dart:async' show Future;
 import 'package:html/parser.dart' show parse;
 import 'package:yaml/yaml.dart';
 import 'dart:convert';
-import 'package:crypto/crypto.dart';
 
 String _toBase64(String string) {
   Base64Encoder e = new Base64Encoder();
@@ -20,7 +19,6 @@ String _toBase64(String string) {
 ///
 /// There is no reason to have more then one of such script tags on a page.
 class FnxConfig extends Transformer {
-
   String mode = null;
 
   Pattern yamlConfigName = new RegExp(r"^lib/conf/config_[^/]*.yaml$");
@@ -32,7 +30,6 @@ class FnxConfig extends Transformer {
   String get allowedExtensions => ".html .yaml";
 
   Future apply(Transform transform) async {
-
     var id = transform.primaryInput.id;
 
     if (id.path.contains(yamlConfigName)) {
@@ -52,43 +49,34 @@ class FnxConfig extends Transformer {
   }
 
   Future _embedConfiguration(Transform transform) async {
-
     AssetId configId = new AssetId(transform.primaryInput.id.package, "lib/conf/config_${mode}.yaml");
 
     String yamlSource = await transform.readInputAsString(configId);
     YamlNode yamlCfg = loadYaml(yamlSource);
 
     Map finalConfig = {
-      "config" : yamlCfg,
-      "meta": {
-        "mode" : mode,
-        "timestamp": new DateTime.now().toIso8601String()
-      }
+      "config": yamlCfg,
+      "meta": {"mode": mode, "timestamp": new DateTime.now().toIso8601String()}
     };
 
-    String jsonEncoded = JSON.encode(finalConfig);
+    String jsonEncoded = _toBase64(JSON.encode(finalConfig));
 
     return transform.primaryInput.readAsString().then((content) {
-
       var document = parse(content);
 
       // attribute selectors don't work yet, do it manually
-      var scripts = document.querySelectorAll('script')
-      .where((scriptTag) {
+      var scripts = document.querySelectorAll('script').where((scriptTag) {
         return scriptTag.attributes['type'] == "pub/fnx_config";
-
       }).forEach((configScriptTag) {
-        configScriptTag.text = " var fnx_config = \"${_toBase64(jsonEncoded)}\";";
+        configScriptTag.text = " var fnx_config = \"${jsonEncoded}\";";
         configScriptTag.attributes.remove("type");
       });
 
       transform.addOutput(new Asset.fromString(transform.primaryInput.id, document.outerHtml));
-    }
-    );
+    });
   }
 
   isPrimary(AssetId id) {
     return id.path.endsWith(".html") || id.path.contains(yamlConfigName);
   }
-
 }
